@@ -1,23 +1,23 @@
 //----------------------------------------------------------------------------------------------------------------------
 // An utility class for:
-//   - ACAN2517FD CAN driver for MCP2517FD (CANFD mode)
+//   - CAN2518FD CAN driver for MCP2517FD (CANFD mode)
 // by Pierre Molinaro
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-#ifndef ACAN2517FD_FILTERS_CLASS_DEFINED
-#define ACAN2517FD_FILTERS_CLASS_DEFINED
+#ifndef CAN2518FD_FILTERS_CLASS_DEFINED
+#define CAN2518FD_FILTERS_CLASS_DEFINED
 
 //----------------------------------------------------------------------------------------------------------------------
 
 #include <CANFDMessage.h>
 
 //----------------------------------------------------------------------------------------------------------------------
-//  ACAN2517FDFilters class
+//  CAN2518FDFilters class
 //----------------------------------------------------------------------------------------------------------------------
 
-class ACAN2517FDFilters {
+class CAN2518FDFilters {
 
     //······················································································································
     //   EMBEDDED CLASS
@@ -62,13 +62,13 @@ public: typedef enum {
       //   CONSTRUCTOR
       //······················································································································
 
-public: ACAN2517FDFilters(void) {}
+public: CAN2518FDFilters(void) {}
 
       //······················································································································
       //   DESTRUCTOR
       //······················································································································
 
-public: ~ACAN2517FDFilters(void) {
+public: ~CAN2518FDFilters(void) {
     while (mFirstFilter != NULL) {
         Filter* next = mFirstFilter->mNextFilter;
         delete mFirstFilter;
@@ -101,8 +101,8 @@ public: void appendFormatFilter(const tFrameFormat inFormat, // Accept any ident
         inCallBackRoutine);
     if (mFirstFilter == NULL) {
         mFirstFilter = f;
-    }    
-else {
+    }
+    else {
         mLastFilter->mNextFilter = f;
     }
     mLastFilter = f;
@@ -130,8 +130,8 @@ public: void appendFrameFilter(const tFrameFormat inFormat,
     uint32_t acceptance;
     if (inFormat == kExtended) {
         acceptance = ((inIdentifier >> 18) & 0x7FF) | ((inIdentifier & 0x3FFFF) << 11) | (((uint32_t)1) << 30);
-    }    
-else {
+    }
+    else {
         acceptance = inIdentifier;
     }
     //--- Enter filter
@@ -230,14 +230,14 @@ private: uint8_t mFilterErrorIndex = 0;
        //   NO COPY
        //······················································································································
 
-private: ACAN2517FDFilters(const ACAN2517FDFilters&) = delete;
-private: ACAN2517FDFilters& operator = (const ACAN2517FDFilters&) = delete;
+private: CAN2518FDFilters(const CAN2518FDFilters&) = delete;
+private: CAN2518FDFilters& operator = (const CAN2518FDFilters&) = delete;
 
        //······················································································································
        //   Friend
        //······················································································································
 
-       friend class ACAN2517FD;
+       friend class CAN2518FD;
 
        //······················································································································
 

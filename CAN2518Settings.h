@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 // A CAN driver for MCP2517FD (CANFD mode)
 // by Pierre Molinaro
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@
 #include "ACANFDDataBitrateFactor.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-//  ACAN2517FDSettings class
+//  CAN2518FDSettings class
 //----------------------------------------------------------------------------------------------------------------------
 
-class ACAN2517FDSettings {
+class CAN2518FDSettings {
 
     //······················································································································
     //   ENUMERATED TYPES
@@ -85,7 +85,7 @@ public: typedef enum : uint8_t {
       //   CONSTRUCTOR
       //······················································································································
 
-public: ACAN2517FDSettings(const Oscillator inOscillator,
+public: CAN2518FDSettings(const Oscillator inOscillator,
     const uint32_t inDesiredArbitrationBitRate,
     const DataBitRateFactor inDataBitRateFactor,
     const uint32_t inTolerancePPM = 1000);
@@ -94,11 +94,11 @@ public: ACAN2517FDSettings(const Oscillator inOscillator,
       //   DEPRECATED CONSTRUCTOR (for compatibility with version < 2.1.0)
       //······················································································································
 
-public: ACAN2517FDSettings(const Oscillator inOscillator,
+public: CAN2518FDSettings(const Oscillator inOscillator,
     const uint32_t inDesiredArbitrationBitRate,
     const DataBitRateFactor_Deprecated inDataBitRateFactor,
     const uint32_t inTolerancePPM = 1000) :
-    ACAN2517FDSettings(inOscillator, inDesiredArbitrationBitRate, DataBitRateFactor(inDataBitRateFactor), inTolerancePPM) {
+    CAN2518FDSettings(inOscillator, inDesiredArbitrationBitRate, DataBitRateFactor(inDataBitRateFactor), inTolerancePPM) {
 }
 
       //······················································································································

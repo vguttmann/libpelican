@@ -4,7 +4,7 @@
 
 // This header is common to libraries
 //        https://github.com/pierremolinaro/ACAN_T4
-//        https://github.com/pierremolinaro/ACAN2517FD
+//        https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 

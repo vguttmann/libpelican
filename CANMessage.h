@@ -5,8 +5,8 @@
 // This file is common to the following libraries
 // https://github.com/pierremolinaro/acan
 // https://github.com/pierremolinaro/acan2515
-// https://github.com/pierremolinaro/acan2517
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 

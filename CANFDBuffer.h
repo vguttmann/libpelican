@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 // A CAN driver for MCP2517FD CAN Controller in CANFD mode
 // by Pierre Molinaro
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 

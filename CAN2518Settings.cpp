@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 // A CAN driver for MCP2517FD (CANFD mode)
 // by Pierre Molinaro
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@
 //    sysClock
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::sysClock(const Oscillator inOscillator) {
+uint32_t CAN2518FDSettings::sysClock(const Oscillator inOscillator) {
     uint32_t sysClock = 40UL * 1000 * 1000;
     switch (inOscillator) {
     case OSC_4MHz:
@@ -43,7 +43,7 @@ uint32_t ACAN2517FDSettings::sysClock(const Oscillator inOscillator) {
 //   CONSTRUCTOR
 //----------------------------------------------------------------------------------------------------------------------
 
-ACAN2517FDSettings::ACAN2517FDSettings(const Oscillator inOscillator,
+CAN2518FDSettings::CAN2518FDSettings(const Oscillator inOscillator,
     const uint32_t inDesiredArbitrationBitRate,
     const DataBitRateFactor inDataBitRateFactor,
     const uint32_t inTolerancePPM) :
@@ -190,14 +190,14 @@ ACAN2517FDSettings::ACAN2517FDSettings(const Oscillator inOscillator,
 //   ACCESSORS
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::actualArbitrationBitRate(void) const {
+uint32_t CAN2518FDSettings::actualArbitrationBitRate(void) const {
     const uint32_t arbitrationTQCount = 1 /* Sync Seg */ + mArbitrationPhaseSegment1 + mArbitrationPhaseSegment2;
     return mSysClock / mBitRatePrescaler / arbitrationTQCount;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::actualDataBitRate(void) const {
+uint32_t CAN2518FDSettings::actualDataBitRate(void) const {
     if (mDataBitRateFactor == DataBitRateFactor::x1) {
         return actualArbitrationBitRate();
     }
@@ -209,14 +209,14 @@ uint32_t ACAN2517FDSettings::actualDataBitRate(void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-bool ACAN2517FDSettings::exactArbitrationBitRate(void) const {
+bool CAN2518FDSettings::exactArbitrationBitRate(void) const {
     const uint32_t TQCount = 1 /* Sync Seg */ + mArbitrationPhaseSegment1 + mArbitrationPhaseSegment2;
     return mSysClock == (mBitRatePrescaler * mDesiredArbitrationBitRate * TQCount);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-bool ACAN2517FDSettings::exactDataBitRate(void) const {
+bool CAN2518FDSettings::exactDataBitRate(void) const {
     if (mDataBitRateFactor == DataBitRateFactor::x1) {
         return exactArbitrationBitRate();
     }
@@ -228,7 +228,7 @@ bool ACAN2517FDSettings::exactDataBitRate(void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-bool ACAN2517FDSettings::dataBitRateIsAMultipleOfArbitrationBitRate(void) const {
+bool CAN2518FDSettings::dataBitRateIsAMultipleOfArbitrationBitRate(void) const {
     bool result = mDataBitRateFactor == DataBitRateFactor::x1;
     if (!result) {
         const uint32_t dataTQCount = 1 /* Sync Seg */ + mDataPhaseSegment1 + mDataPhaseSegment2;
@@ -240,7 +240,7 @@ bool ACAN2517FDSettings::dataBitRateIsAMultipleOfArbitrationBitRate(void) const 
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::ppmFromDesiredArbitrationBitRate(void) const {
+uint32_t CAN2518FDSettings::ppmFromDesiredArbitrationBitRate(void) const {
     const uint32_t TQCount = 1 /* Sync Seg */ + mArbitrationPhaseSegment1 + mArbitrationPhaseSegment2;
     const uint32_t W = TQCount * mDesiredArbitrationBitRate * mBitRatePrescaler;
     const uint64_t diff = (mSysClock > W) ? (mSysClock - W) : (W - mSysClock);
@@ -250,7 +250,7 @@ uint32_t ACAN2517FDSettings::ppmFromDesiredArbitrationBitRate(void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::arbitrationSamplePointFromBitStart(void) const {
+uint32_t CAN2518FDSettings::arbitrationSamplePointFromBitStart(void) const {
     const uint32_t nominalTQCount = 1 /* Sync Seg */ + mArbitrationPhaseSegment1 + mArbitrationPhaseSegment2;
     const uint32_t samplePoint = 1 /* Sync Seg */ + mArbitrationPhaseSegment1;
     const uint32_t partPerCent = 100;
@@ -259,7 +259,7 @@ uint32_t ACAN2517FDSettings::arbitrationSamplePointFromBitStart(void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::dataSamplePointFromBitStart(void) const {
+uint32_t CAN2518FDSettings::dataSamplePointFromBitStart(void) const {
     const uint32_t nominalTQCount = 1 /* Sync Seg */ + mDataPhaseSegment1 + mDataPhaseSegment2;
     const uint32_t samplePoint = 1 /* Sync Seg */ + mDataPhaseSegment1;
     const uint32_t partPerCent = 100;
@@ -268,7 +268,7 @@ uint32_t ACAN2517FDSettings::dataSamplePointFromBitStart(void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::CANBitSettingConsistency(void) const {
+uint32_t CAN2518FDSettings::CANBitSettingConsistency(void) const {
     uint32_t errorCode = 0; // Means no error
     //--- Bit rate prescaler
     if (mBitRatePrescaler == 0) {
@@ -345,7 +345,7 @@ uint32_t ACAN2517FDSettings::CANBitSettingConsistency(void) const {
 //   RAM USAGE
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::ramUsage(void) const {
+uint32_t CAN2518FDSettings::ramUsage(void) const {
     uint32_t result = 0;
     //--- TXQ
     result += objectSizeForPayload(mControllerTXQBufferPayload) * mControllerTXQSize;
@@ -359,7 +359,7 @@ uint32_t ACAN2517FDSettings::ramUsage(void) const {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-uint32_t ACAN2517FDSettings::objectSizeForPayload(const PayloadSize inPayload) {
+uint32_t CAN2518FDSettings::objectSizeForPayload(const PayloadSize inPayload) {
     static const uint8_t kPayload[8] = { 16, 20, 24, 28, 32, 40, 56, 72 };
     return kPayload[inPayload];
 }

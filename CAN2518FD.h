@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 // A CAN driver for MCP2517FD, CANFD mode
 // by Pierre Molinaro
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -16,16 +16,16 @@
 #include <furi.h>
 
 //----------------------------------------------------------------------------------------------------------------------
-//   ACAN2517FD class
+//   CAN2518FD class
 //----------------------------------------------------------------------------------------------------------------------
 
-class ACAN2517FD {
+class CAN2518FD {
 
     //······················································································································
     //   CONSTRUCTOR
     //······················································································································
 
-public: ACAN2517FD(const uint8_t inCS, // CS input of MCP2517FD
+public: CAN2518FD(const uint8_t inCS, // CS input of MCP2517FD
     SPIClass& inSPI, // Hardware SPI object
     const uint8_t inINT); // INT output of MCP2517FD
 
@@ -33,12 +33,12 @@ public: ACAN2517FD(const uint8_t inCS, // CS input of MCP2517FD
       //   begin method (returns 0 if no error)
       //······················································································································
 
-public: uint32_t begin(const ACAN2517FDSettings& inSettings,
+public: uint32_t begin(const CAN2518FDSettings& inSettings,
     void (*inInterruptServiceRoutine) (void));
 
-public: uint32_t begin(const ACAN2517FDSettings& inSettings,
+public: uint32_t begin(const CAN2518FDSettings& inSettings,
     void (*inInterruptServiceRoutine) (void),
-    const ACAN2517FDFilters& inFilters);
+    const CAN2518FDFilters& inFilters);
 
       //--- Error code returned by begin
 public: static const uint32_t kRequestedConfigurationModeTimeOut = uint32_t(1) << 0;
@@ -106,9 +106,9 @@ public: uint32_t diagInfos(const int inIndex = 1);
       //    Operation Mode
       //······················································································································
 
-public: ACAN2517FDSettings::OperationMode currentOperationMode(void);
+public: CAN2518FDSettings::OperationMode currentOperationMode(void);
 
-public: void setOperationMode(const ACAN2517FDSettings::OperationMode inMode);
+public: void setOperationMode(const CAN2518FDSettings::OperationMode inMode);
 
       //······················································································································
       //    Recovery from Restricted Operation Mode
@@ -339,8 +339,8 @@ public: void configureGPIO0AsXSTBY(void);
       //    No copy
       //······················································································································
 
-private: ACAN2517FD(const ACAN2517FD&) = delete;
-private: ACAN2517FD& operator = (const ACAN2517FD&) = delete;
+private: CAN2518FD(const CAN2518FD&) = delete;
+private: CAN2518FD& operator = (const CAN2518FD&) = delete;
 
        //······················································································································
 

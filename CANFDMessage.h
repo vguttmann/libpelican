@@ -2,7 +2,7 @@
 // Generic CANFD Message
 // by Pierre Molinaro
 //
-// https://github.com/pierremolinaro/acan2517FD
+// https://github.com/pierremolinaro/CAN2518FD
 //
 //-----------------------------------------------------------------------------
 
@@ -97,8 +97,8 @@ public: void pad(void) {
     }
     else if ((len > 20) && (len < 24)) {
         paddedLength = 24;
-    }    
-else if ((len > 24) && (len < 32)) {
+    }
+    else if ((len > 24) && (len < 32)) {
         paddedLength = 32;
     }
     else if ((len > 32) && (len < 48)) {
