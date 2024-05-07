@@ -480,7 +480,7 @@ uint32_t CAN2518FD::begin(const CAN2518FDSettings& inSettings,
         //  bits 11-8: TSEG2 - 1
         //  bits 7-4: unused
         //  bits 3-0: SJW - 1
-        mHasDataBitRate = inSettings.mDataBitRateFactor != ::DataBitRateFactor::x1;
+        mHasDataBitRate = inSettings.mDataBitrateFactor != ::DataBitrateFactor::x1;
         if (mHasDataBitRate) {
             data = inSettings.mBitRatePrescaler - 1;
             data <<= 8;

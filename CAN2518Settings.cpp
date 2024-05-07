@@ -45,13 +45,13 @@ uint32_t CAN2518FDSettings::sysClock(const Oscillator inOscillator) {
 
 CAN2518FDSettings::CAN2518FDSettings(const Oscillator inOscillator,
     const uint32_t inDesiredArbitrationBitRate,
-    const DataBitRateFactor inDataBitRateFactor,
+    const DataBitrateFactor inDataBitrateFactor,
     const uint32_t inTolerancePPM) :
     mOscillator(inOscillator),
     mSysClock(sysClock(inOscillator)),
     mDesiredArbitrationBitRate(inDesiredArbitrationBitRate),
-    mDataBitRateFactor(inDataBitRateFactor) {
-    if (inDataBitRateFactor == DataBitRateFactor::x1) { // Single bit rate
+    mDataBitrateFactor(inDataBitrateFactor) {
+    if (inDataBitrateFactor == DataBitrateFactor::x1) { // Single bit rate
         const uint32_t maxTQCount = MAX_ARBITRATION_PHASE_SEGMENT_1 + MAX_ARBITRATION_PHASE_SEGMENT_2 + 1; // Setting for slowest bit rate
         uint32_t BRP = MAX_BRP;
         uint32_t smallestError = UINT32_MAX;
@@ -109,7 +109,7 @@ CAN2518FDSettings::CAN2518FDSettings(const Oscillator inOscillator,
     }
     else { // Dual bit rate, first compute data bit rate
         const uint32_t maxDataTQCount = MAX_DATA_PHASE_SEGMENT_1 + MAX_DATA_PHASE_SEGMENT_2; // Setting for slowest bit rate
-        const uint32_t desiredDataBitRate = inDesiredArbitrationBitRate * uint8_t(inDataBitRateFactor);
+        const uint32_t desiredDataBitRate = inDesiredArbitrationBitRate * uint8_t(inDataBitrateFactor);
         uint32_t smallestError = UINT32_MAX;
         uint32_t bestBRP = MAX_BRP; // Setting for lowest bit rate
         uint32_t bestDataTQCount = maxDataTQCount; // Setting for lowest bit rate
@@ -151,7 +151,7 @@ CAN2518FDSettings::CAN2518FDSettings(const Oscillator inOscillator,
             dataPS1 = MAX_DATA_PHASE_SEGMENT_1;
         }
         //---
-        if ((mDesiredArbitrationBitRate * uint32_t(inDataBitRateFactor)) <= (1000UL * 1000)) {
+        if ((mDesiredArbitrationBitRate * uint32_t(inDataBitrateFactor)) <= (1000UL * 1000)) {
             mTDCO = 0;
         }
         else {
@@ -161,7 +161,7 @@ CAN2518FDSettings::CAN2518FDSettings(const Oscillator inOscillator,
         mDataPhaseSegment1 = (uint8_t)dataPS1;
         mDataPhaseSegment2 = (uint8_t)dataPS2;
         mDataSJW = mDataPhaseSegment2;
-        const uint32_t arbitrationTQCount = bestDataTQCount * uint8_t(mDataBitRateFactor);
+        const uint32_t arbitrationTQCount = bestDataTQCount * uint8_t(mDataBitrateFactor);
         //--- Compute arbiration PS2 (1 <= PS2 <= 128)
         uint32_t arbitrationPS2 = arbitrationTQCount / 5; // For sampling point at 80%
         if (arbitrationPS2 == 0) {
@@ -198,7 +198,7 @@ uint32_t CAN2518FDSettings::actualArbitrationBitRate(void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t CAN2518FDSettings::actualDataBitRate(void) const {
-    if (mDataBitRateFactor == DataBitRateFactor::x1) {
+    if (mDataBitrateFactor == DataBitrateFactor::x1) {
         return actualArbitrationBitRate();
     }
     else {
@@ -217,23 +217,23 @@ bool CAN2518FDSettings::exactArbitrationBitRate(void) const {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool CAN2518FDSettings::exactDataBitRate(void) const {
-    if (mDataBitRateFactor == DataBitRateFactor::x1) {
+    if (mDataBitrateFactor == DataBitrateFactor::x1) {
         return exactArbitrationBitRate();
     }
     else {
         const uint32_t TQCount = 1 /* Sync Seg */ + mDataPhaseSegment1 + mDataPhaseSegment2;
-        return mSysClock == (mBitRatePrescaler * mDesiredArbitrationBitRate * TQCount * uint8_t(mDataBitRateFactor));
+        return mSysClock == (mBitRatePrescaler * mDesiredArbitrationBitRate * TQCount * uint8_t(mDataBitrateFactor));
     }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool CAN2518FDSettings::dataBitRateIsAMultipleOfArbitrationBitRate(void) const {
-    bool result = mDataBitRateFactor == DataBitRateFactor::x1;
+    bool result = mDataBitrateFactor == DataBitrateFactor::x1;
     if (!result) {
         const uint32_t dataTQCount = 1 /* Sync Seg */ + mDataPhaseSegment1 + mDataPhaseSegment2;
         const uint32_t arbitrationTQCount = 1 /* Sync Seg */ + mArbitrationPhaseSegment1 + mArbitrationPhaseSegment2;
-        result = arbitrationTQCount == (dataTQCount * uint8_t(mDataBitRateFactor));
+        result = arbitrationTQCount == (dataTQCount * uint8_t(mDataBitrateFactor));
     }
     return result;
 }
@@ -305,9 +305,9 @@ uint32_t CAN2518FDSettings::CANBitSettingConsistency(void) const {
         errorCode |= kArbitrationSJWIsGreaterThanPhaseSegment2;
     }
     //--- Data bit rate ?
-    if (mDataBitRateFactor != DataBitRateFactor::x1) {
+    if (mDataBitrateFactor != DataBitrateFactor::x1) {
         if (!dataBitRateIsAMultipleOfArbitrationBitRate()) {
-            errorCode |= kArbitrationTQCountNotDivisibleByDataBitRateFactor;
+            errorCode |= kArbitrationTQCountNotDivisibleByDataBitrateFactor;
         }
         //--- Data Phase Segment 1
         if (mDataPhaseSegment1 < 2) {

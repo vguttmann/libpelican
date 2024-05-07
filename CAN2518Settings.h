@@ -65,7 +65,7 @@ public: typedef enum : uint8_t {
 } PayloadSize;
 
       //······················································································································
-      //   Deprecated enumeration (now use DataBitRateFactor declared in ACANFD_DataBitRateFactor.h)
+      //   Deprecated enumeration (now use DataBitrateFactor declared in ACANFD_DataBitrateFactor.h)
       //······················································································································
 
 public: typedef enum : uint8_t {
@@ -79,7 +79,7 @@ public: typedef enum : uint8_t {
     DATA_BITRATE_x8 = 8,
     DATA_BITRATE_x9 = 9,
     DATA_BITRATE_x10 = 10
-} DataBitRateFactor_Deprecated;
+} DataBitrateFactor_Deprecated;
 
       //······················································································································
       //   CONSTRUCTOR
@@ -87,7 +87,7 @@ public: typedef enum : uint8_t {
 
 public: CAN2518FDSettings(const Oscillator inOscillator,
     const uint32_t inDesiredArbitrationBitRate,
-    const DataBitRateFactor inDataBitRateFactor,
+    const DataBitrateFactor inDataBitrateFactor,
     const uint32_t inTolerancePPM = 1000);
 
       //······················································································································
@@ -96,9 +96,9 @@ public: CAN2518FDSettings(const Oscillator inOscillator,
 
 public: CAN2518FDSettings(const Oscillator inOscillator,
     const uint32_t inDesiredArbitrationBitRate,
-    const DataBitRateFactor_Deprecated inDataBitRateFactor,
+    const DataBitrateFactor_Deprecated inDataBitrateFactor,
     const uint32_t inTolerancePPM = 1000) :
-    CAN2518FDSettings(inOscillator, inDesiredArbitrationBitRate, DataBitRateFactor(inDataBitRateFactor), inTolerancePPM) {
+    CAN2518FDSettings(inOscillator, inDesiredArbitrationBitRate, DataBitrateFactor(inDataBitrateFactor), inTolerancePPM) {
 }
 
       //······················································································································
@@ -108,11 +108,11 @@ public: CAN2518FDSettings(const Oscillator inOscillator,
 private: Oscillator mOscillator;
 private: uint32_t mSysClock; // In Hz
 public: const uint32_t mDesiredArbitrationBitRate; // In kb/s
-public: const DataBitRateFactor mDataBitRateFactor;
-      //--- Data bit rate; if mDataBitRateFactor==1, theses properties are not used for configuring the MCP2517FD.
-public: uint8_t mDataPhaseSegment1 = 0; // if mDataBitRateFactor > 1: 2...32, else equal to mArbitrationPhaseSegment1
-public: uint8_t mDataPhaseSegment2 = 0; // if mDataBitRateFactor > 1: 1...16, else equal to mArbitrationPhaseSegment2
-public: uint8_t mDataSJW = 0; // if mDataBitRateFactor > 1: 1...16, else equal to mArbitrationSJW
+public: const DataBitrateFactor mDataBitrateFactor;
+      //--- Data bit rate; if mDataBitrateFactor==1, theses properties are not used for configuring the MCP2517FD.
+public: uint8_t mDataPhaseSegment1 = 0; // if mDataBitrateFactor > 1: 2...32, else equal to mArbitrationPhaseSegment1
+public: uint8_t mDataPhaseSegment2 = 0; // if mDataBitrateFactor > 1: 1...16, else equal to mArbitrationPhaseSegment2
+public: uint8_t mDataSJW = 0; // if mDataBitrateFactor > 1: 1...16, else equal to mArbitrationSJW
       //--- Bit rate prescaler is common to arbitration and data bit rates
 public: uint16_t mBitRatePrescaler = 0; // 1...256
       //--- Arbitration bit rate
@@ -264,7 +264,7 @@ public: static const uint32_t kArbitrationSJWIsZero = ((uint32_t)1) << 6;
 public: static const uint32_t kArbitrationSJWIsGreaterThan128 = ((uint32_t)1) << 7;
 public: static const uint32_t kArbitrationSJWIsGreaterThanPhaseSegment1 = ((uint32_t)1) << 8;
 public: static const uint32_t kArbitrationSJWIsGreaterThanPhaseSegment2 = ((uint32_t)1) << 9;
-public: static const uint32_t kArbitrationTQCountNotDivisibleByDataBitRateFactor = ((uint32_t)1) << 10;
+public: static const uint32_t kArbitrationTQCountNotDivisibleByDataBitrateFactor = ((uint32_t)1) << 10;
 public: static const uint32_t kDataPhaseSegment1IsLowerThan2 = ((uint32_t)1) << 11;
 public: static const uint32_t kDataPhaseSegment1IsGreaterThan32 = ((uint32_t)1) << 12;
 public: static const uint32_t kDataPhaseSegment2IsZero = ((uint32_t)1) << 13;
