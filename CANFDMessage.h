@@ -12,6 +12,7 @@
 //-----------------------------------------------------------------------------
 
 #include <CANMessage.h>
+#include <furi.h>
 
 //-----------------------------------------------------------------------------
 //    CANFDMessage class
@@ -21,13 +22,35 @@
 // Having other values is an error that prevents frame to be sent by tryToSend
 // You can use the "pad" method for padding with 0 bytes to the next valid length
 
-class CANFDMessage {
 
-    //·············································································
-    //   Constructors
-    //·············································································
+typedef enum {
+    CAN_REMOTE,
+    CAN_DATA,
+    CANFD_NO_BIT_RATE_SWITCH,
+    CANFD_WITH_BIT_RATE_SWITCH
+} Type;
 
-public: CANFDMessage(void) :
+typedef struct {
+    uint32_t id;  // Frame identifier
+    bool ext; // false -> base frame, true -> extended frame
+    Type type;
+    uint8_t idx;  // This field is used by the driver
+    uint8_t len;  // Length of data (0 ... 64)
+    union {
+        uint64_t data64[8]; // Caution: subject to endianness
+        int64_t  data_s64[8]; // Caution: subject to endianness
+        uint32_t data32[16]; // Caution: subject to endianness
+        int32_t  data_s32[16]; // Caution: subject to endianness
+        float    dataFloat[16]; // Caution: subject to endianness
+        uint16_t data16[32]; // Caution: subject to endianness
+        int16_t  data_s16[32]; // Caution: subject to endianness
+        int8_t   data_s8[64];
+        uint8_t  data[64];
+    };
+} CANFDMessage;
+
+
+CANFDMessage instantiateEmptyMessage(void) :
     id(0),  // Frame identifier
     ext(false), // false -> base frame, true -> extended frame
     type(CANFD_WITH_BIT_RATE_SWITCH),
@@ -36,9 +59,8 @@ public: CANFDMessage(void) :
     data() {
 }
 
-      //·············································································
 
-public: CANFDMessage(const CANMessage& inMessage) :
+CANFDMessage(const CANMessage& inMessage) :
     id(inMessage.id),  // Frame identifier
     ext(inMessage.ext), // false -> base frame, true -> extended frame
     type(inMessage.rtr ? CAN_REMOTE : CAN_DATA),
@@ -48,94 +70,11 @@ public: CANFDMessage(const CANMessage& inMessage) :
     data64[0] = inMessage.data64;
 }
 
-      //·············································································
-      //   Enumerated Type
-      //·············································································
-
-public: typedef enum : uint8_t {
-    CAN_REMOTE,
-    CAN_DATA,
-    CANFD_NO_BIT_RATE_SWITCH,
-    CANFD_WITH_BIT_RATE_SWITCH
-} Type;
-
-      //·············································································
-      //   Properties
-      //·············································································
-
-public: uint32_t id;  // Frame identifier
-public: bool ext; // false -> base frame, true -> extended frame
-public: Type type;
-public: uint8_t idx;  // This field is used by the driver
-public: uint8_t len;  // Length of data (0 ... 64)
-public: union {
-    uint64_t data64[8]; // Caution: subject to endianness
-    int64_t  data_s64[8]; // Caution: subject to endianness
-    uint32_t data32[16]; // Caution: subject to endianness
-    int32_t  data_s32[16]; // Caution: subject to endianness
-    float    dataFloat[16]; // Caution: subject to endianness
-    uint16_t data16[32]; // Caution: subject to endianness
-    int16_t  data_s16[32]; // Caution: subject to endianness
-    int8_t   data_s8[64];
-    uint8_t  data[64];
-};
-
-      //·············································································
-      //   Methods
-      //·············································································
 
 
 
-      //·············································································
-
-
-
-      //·············································································
-
-};
-
-
-void pad(CANFDMessage* message) {
-    uint8_t paddedLength = len;
-    if ((message->len > 8) && (message->len < 12)) {
-        paddedLength = 12;
-    }
-    else if ((message->len > 12) && (message->len < 16)) {
-        paddedLength = 16;
-    }
-    else if ((message->len > 16) && (message->len < 20)) {
-        paddedLength = 20;
-    }
-    else if ((message->len > 20) && (message->len < 24)) {
-        paddedLength = 24;
-    }
-    else if ((message->len > 24) && (message->len < 32)) {
-        paddedLength = 32;
-    }
-    else if ((message->len > 32) && (message->len < 48)) {
-        paddedLength = 48;
-    }
-    else if ((message->len > 48) && (message->len < 64)) {
-        paddedLength = 64;
-    }
-    while (message->len < paddedLength) {
-        data[message->len] = 0;
-        message->len += 1;
-    }
-}
-
-bool isValid(CANFDMessage* message) {
-    if ((message->type == CAN_REMOTE) || (message->type == CAN_DATA)) { // Remote frame
-        return message->len <= 8;
-    }
-    else { // Data frame
-        return
-            (message->len <= 8) || (message->len == 12) || (message->len == 16) || (message->len == 20)
-            ||
-            (message->len == 24) || (message->len == 32) || (message->len == 48) || (message->len == 64)
-            ;
-    }
-}
+void pad(CANFDMessage* message);
+bool isValid(CANFDMessage* message);
 
 //-----------------------------------------------------------------------------
 
