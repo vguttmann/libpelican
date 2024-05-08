@@ -115,22 +115,24 @@ public: void pad(void) {
 
       //·············································································
 
-public: bool isValid(void) const {
-    if ((type == CAN_REMOTE) || (type == CAN_DATA)) { // Remote frame
-        return len <= 8;
-    }
-    else { // Data frame
-        return
-            (len <= 8) || (len == 12) || (len == 16) || (len == 20)
-            ||
-            (len == 24) || (len == 32) || (len == 48) || (len == 64)
-            ;
-    }
-}
+
 
       //·············································································
 
 };
+
+bool isValid(CANFDMessage& message) {
+    if ((message->type == CAN_REMOTE) || (message->type == CAN_DATA)) { // Remote frame
+        return message->len <= 8;
+    }
+    else { // Data frame
+        return
+            (message->len <= 8) || (message->len == 12) || (message->len == 16) || (message->len == 20)
+            ||
+            (message->len == 24) || (message->len == 32) || (message->len == 48) || (message->len == 64)
+            ;
+    }
+}
 
 //-----------------------------------------------------------------------------
 
