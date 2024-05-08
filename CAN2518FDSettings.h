@@ -21,52 +21,52 @@ class CAN2518FDSettings {
     //   ENUMERATED TYPES
     //······················································································································
 
-public: typedef enum : uint8_t {
-    OSC_4MHz,
-    OSC_4MHz_DIVIDED_BY_2,
-    OSC_4MHz10xPLL,
-    OSC_4MHz10xPLL_DIVIDED_BY_2,
-    OSC_20MHz,
-    OSC_20MHz_DIVIDED_BY_2,
-    OSC_40MHz,
-    OSC_40MHz_DIVIDED_BY_2
-} Oscillator;
+    typedef enum {
+        OSC_4MHz,
+        OSC_4MHz_DIVIDED_BY_2,
+        OSC_4MHz10xPLL,
+        OSC_4MHz10xPLL_DIVIDED_BY_2,
+        OSC_20MHz,
+        OSC_20MHz_DIVIDED_BY_2,
+        OSC_40MHz,
+        OSC_40MHz_DIVIDED_BY_2
+    } Oscillator;
 
-public: typedef enum : uint8_t {
-    CLKO_DIVIDED_BY_1,
-    CLKO_DIVIDED_BY_2,
-    CLKO_DIVIDED_BY_4,
-    CLKO_DIVIDED_BY_10,
-    SOF
-} CLKOpin;
+    typedef enum {
+        CLKO_DIVIDED_BY_1,
+        CLKO_DIVIDED_BY_2,
+        CLKO_DIVIDED_BY_4,
+        CLKO_DIVIDED_BY_10,
+        SOF
+    } CLKOpin;
 
-public: typedef enum : uint8_t {
-    NormalFD = 0,
-    Sleep = 1,
-    InternalLoopBack = 2,
-    ListenOnly = 3,
-    Configuration = 4,
-    ExternalLoopBack = 5,
-    Normal20B = 6,
-    RestrictedOperation = 7
-} OperationMode;
+    typedef enum {
+        NormalFD = 0,
+        Sleep = 1,
+        InternalLoopBack = 2,
+        ListenOnly = 3,
+        Configuration = 4,
+        ExternalLoopBack = 5,
+        Normal20B = 6,
+        RestrictedOperation = 7
+    } OperationMode;
 
-public: typedef enum : uint8_t { Disabled, ThreeAttempts, UnlimitedNumber } RetransmissionAttempts;
+    typedef enum { Disabled, ThreeAttempts, UnlimitedNumber } RetransmissionAttempts;
 
-public: typedef enum : uint8_t {
-    PAYLOAD_8 = 0,
-    PAYLOAD_12 = 1,
-    PAYLOAD_16 = 2,
-    PAYLOAD_20 = 3,
-    PAYLOAD_24 = 4,
-    PAYLOAD_32 = 5,
-    PAYLOAD_48 = 6,
-    PAYLOAD_64 = 7
-} PayloadSize;
+    typedef enum {
+        PAYLOAD_8 = 0,
+        PAYLOAD_12 = 1,
+        PAYLOAD_16 = 2,
+        PAYLOAD_20 = 3,
+        PAYLOAD_24 = 4,
+        PAYLOAD_32 = 5,
+        PAYLOAD_48 = 6,
+        PAYLOAD_64 = 7
+    } PayloadSize;
 
-      //······················································································································
-      //   Deprecated enumeration (now use DataBitrateFactor declared in ACANFD_DataBitrateFactor.h)
-      //······················································································································
+    //······················································································································
+    //   Deprecated enumeration (now use DataBitrateFactor declared in ACANFD_DataBitrateFactor.h)
+    //······················································································································
 
 public: typedef enum : uint8_t {
     DATA_BITRATE_x1 = 1,
