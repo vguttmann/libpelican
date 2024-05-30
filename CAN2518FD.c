@@ -242,7 +242,7 @@ uint32_t CAN2518FD::begin(const CAN2518FDSettings& inSettings,
     //----------------------------------- Check TXQ priority is <= 31
     if (inSettings.mControllerTXQBufferPriority > 31) {
         errorCode |= kControllerTXQPriorityGreaterThan31;
-    }
+    }https://github.com/pierremolinaro/ACAN2517FD
     //----------------------------------- Check controller receive FIFO size is 1 ... 32
     if (inSettings.mControllerReceiveFIFOSize == 0) {
         errorCode |= kControllerReceiveFIFOSizeIsZero;
